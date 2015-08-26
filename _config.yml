@@ -31,5 +31,5 @@ github:
 
 # Page links on the header
   pages_list:       
-  About: '/about'
-  Feed: '/atom.xml'
+   About: '/about'
+   Feed: '/atom.xml'
