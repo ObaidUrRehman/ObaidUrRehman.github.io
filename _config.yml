@@ -30,6 +30,6 @@ github:
   repo:              https://github.com/poole/poole
 
 # Page links on the header
-  pages_list:       
-   About: '/about'
-   Feed: '/atom.xml'
+pages_list:       
+  About: '/about'
+  Feed: '/atom.xml'
