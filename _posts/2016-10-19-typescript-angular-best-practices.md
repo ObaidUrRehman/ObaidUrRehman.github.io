@@ -1,7 +1,13 @@
 ---
 layout: post
-title: Example content
+title: Angular TypeScript Best Practices
 ---
+
+
+## Use private parameters in constructors
+
+## Strongly Typed Scopes
+
 ## Magic strings are bad
 
 Don't use magic strings for controller, service or directive names or any where for that matter. Its a bad practice that will always waste your time. Always keep the name of the service or controller within the class as a static property and refrence it when you define it in angular. Here is an example service.
@@ -21,7 +27,7 @@ module App {
       }
 
       get() {
-         this.$http.get(/api/users).then();
+         this.$http.get('/api/users').then();
       }
    } 
 }
