@@ -2,8 +2,6 @@
 layout: post
 title: Angular TypeScript Best Practices
 ---
-
-
 ## Use private parameters in constructors
 
 If you are not using private constructor parameters, then you are probably doing this, where you manually map it to the private field of the class:
@@ -122,4 +120,71 @@ Then, define your angular service like this:
 
 {% highlight js %}
 angular.service(App.userService.IName, App.userService);
+{% endhighlight %}
+
+## Strongly typed Server side API Objects
+
+If you consume Rest APIs on the client side then take type checking to the next level by using [Typelite] (http://type.litesolutions.net/) for .Net and [ts-java] (https://www.npmjs.com/package/ts-java) for Java. 
+Use these tools to generate TypeScript type definitions for server side classes that are returned as RestApi Responses. As a example, consider the following 
+C# Class that is returned as response to the get User API:
+
+{% highlight cs %}
+
+namespace App.Api
+{
+   public class User {
+       public string Name { get; set; }
+       public DateTime DoB {get; set;
+       public List<Address> Addresses { get; set; }
+   }
+   
+   public class Address
+   {
+      public string City  {get; set;}
+      public string State {get; set;}
+   }
+    
+   }
+}
+{% endhighlight %}
+
+This will generate the following TypeScript declaration:
+
+{% highlight js %}
+declare module App.Api{
+   interface User{
+      Name: string;
+      DoB: Date;
+      Address: Address[];
+   }
+   
+   interface Address{
+      City: string;
+      State: string;
+   }
+}
+{% endhighlight %}
+
+Now, you can use this type definition to define the return type of $http, like this:
+
+{% highlight js %}
+module App {
+   export class userService {
+   
+      public static IName = "userService";
+      public static $inject = ["$http", "$modal"];
+
+      constructor(
+         private $http: ng.IHttpService,
+         private $modal: any) {
+      }
+
+      get(id: number): ng.IPromise<App.Api.User> {
+         return this.$http.get('/api/users' + id.ToString()).
+            then((response: ng.IHttpPromiseCallbackArg<App.Api.User>): App.Api.User => {
+               return response.data;
+            });
+      }
+   } 
+}
 {% endhighlight %}
