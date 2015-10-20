@@ -128,7 +128,7 @@ If you consume Rest APIs on the client side then take type checking to the next 
 Use these tools to generate TypeScript type definitions for server side classes that are returned as RestApi Responses. As a example, consider the following 
 C# Class that is returned as response to the get User API:
 
-{% highlight cs %}
+{% highlight c# %}
 
 namespace App.Api
 {
