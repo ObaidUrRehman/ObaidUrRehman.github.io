@@ -124,7 +124,7 @@ angular.service(App.userService.IName, App.userService);
 
 ## Strongly typed Server side API Objects
 
-If you consume Rest APIs on the client side then take type checking to the next level by using [Typelite] (http://type.litesolutions.net/) for .Net and [ts-java] (https://www.npmjs.com/package/ts-java) for Java. 
+If you consume Rest APIs on the client side then take type checking to the next level by using <a href="http://type.litesolutions.net/">Typelite</a> for .Net or <a href="http://type.litesolutions.net/">ts-java</a> for Java. 
 Use these tools to generate TypeScript type definitions for server side classes that are returned as RestApi Responses. As a example, consider the following 
 C# Class that is returned as response to the get User API:
 
@@ -132,7 +132,8 @@ C# Class that is returned as response to the get User API:
 
 namespace App.Api
 {
-   public class User {
+   public class User 
+   {
        public string Name { get; set; }
        public DateTime DoB {get; set;
        public List<Address> Addresses { get; set; }
@@ -142,8 +143,6 @@ namespace App.Api
    {
       public string City  {get; set;}
       public string State {get; set;}
-   }
-    
    }
 }
 {% endhighlight %}
