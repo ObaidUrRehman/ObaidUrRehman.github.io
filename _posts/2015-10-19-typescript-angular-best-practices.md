@@ -116,7 +116,7 @@ module App {
 {% endhighlight %}
 
 
-Then, define your angular service like this:
+Then, register your service with angular like this:
 
 {% highlight js %}
 angular.service(App.userService.IName, App.userService);
