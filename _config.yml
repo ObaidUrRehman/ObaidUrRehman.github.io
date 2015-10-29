@@ -5,7 +5,7 @@ permalink:           /:title
 relative_permalinks: true
 
 # Setup
-title:               Obaid
+title:               Obaid ur Rehman
 tagline:             Frontend Developer with Backend Expertise.
 url:                 http://obaidurrehman.github.io/
 paginate:            3
