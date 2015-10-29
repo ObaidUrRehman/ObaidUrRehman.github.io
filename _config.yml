@@ -20,14 +20,14 @@ sass:
 
 # About/contact
 author:
-  name:              Mark Otto
-  url:               https://twitter.com/mdo
-  email:             markdotto@gmail.com
+  name:              Obaid ur Rehman
+  url:               https://twitter.com/obaidurrehmann
+  email:             obaid@live.com
 
 # Custom vars
 version:             2.0.0
 github:
-  repo:              https://github.com/poole/poole
+  repo:              https://github.com/ObaidurRehman
 
 # Page links on the header
 pages_list:       
