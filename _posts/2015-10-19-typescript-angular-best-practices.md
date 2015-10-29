@@ -1,14 +1,19 @@
 ---
 layout: post
-title: Angular TypeScript Best Practices
+title: AngularJs TypeScript Best Practices
 ---
-
+Having worked on a couple of AngularJs apps using TypeScript, I have come up with a list of my own best practices that I follow to keep things smooth during development. 
+These practices are by no means comprehensive or de-facto and are based on my development experiences.
 
 ## Use TypeScript type definitions
 
-If you are writing your Angular app in TypeScript it is recommended that you use type definitions for Angular. As for any third party libraries I'd say, use it if you can. 
-At <a href="http://definitelytyped.org/">DefinitelyTyped</a> you can find a definition file for popular components. In the longer run it pays off using type
-definitions.
+If you are writing your Angular app in TypeScript I'd recommended that you use type definitions for AngularJS and all related components like 
+<a href="https://github.com/angular-ui/ui-router">ng-ui-router</a>, <a href="https://github.com/angular-ui/bootstrap">angular-ui-bootstrap</a> etc.
+At <a href="http://definitelytyped.org/">DefinitelyTyped</a> you can find definition files for popular libraries.
+In the longer run it pays off using type definitions. You get the usual advantage of compile time type checking.
+
+The <a href="http://definitelytyped.org/tsd/">TSD</a> is an excellent tool to find and install TypeScript definition files from the 
+<a href="https://github.com/borisyankov/DefinitelyTyped">DefinitelyTyped</a> repository.
 
 ## Strongly Typed Scopes
 Keep your scopes strongly typed by extending `ng.IScope` like the following.
