@@ -53,36 +53,36 @@ module App {
 
 {% endhighlight %}
 
-## Strongly typed Server side API Objects
+### 3. Strongly typed Server side API Objects
 
 If you consume Rest APIs on the client side then take type checking to the next level by using <a href="http://type.litesolutions.net/">Typelite</a> for .Net or <a href="http://type.litesolutions.net/">ts-java</a> for Java. 
-Use these tools to generate TypeScript type definitions for server side classes that are returned as RestApi Responses. As a example, consider the following 
-C# Class that is returned as response to the get User API:
+Use these tools to generate TypeScript type definitions for server side classes that are returned as Rest Api Responses and include them in your project. 
+As a example, consider the following C# Class that is returned as response to the get User API call:
 
-{% highlight c# %}
+{% highlight c# linenos %}
 
 namespace App.Api
 {
    public class User 
    {
-       public string Name { get; set; }
-       public DateTime DoB {get; set;
-       public List<Address> Addresses { get; set; }
+      public string Name              { get; set; }
+      public DateTime DoB             { get; set; }
+      public List<Address> Addresses  { get; set; }
    }
    
    public class Address
    {
-      public string City  {get; set;}
-      public string State {get; set;}
+      public string City               { get; set; }
+      public string State              { get; set; }
    }
 }
 {% endhighlight %}
 
 This will generate the following TypeScript declaration:
 
-{% highlight js %}
-declare module App.Api{
-   interface User{
+{% highlight js linenos %}
+declare module App.Api {
+   interface User {
       Name: string;
       DoB: Date;
       Address: Address[];
@@ -97,7 +97,7 @@ declare module App.Api{
 
 Now, you can use this type definition to define the return type of $http, like this:
 
-{% highlight js %}
+{% highlight js linenos %}
 module App {
    export class userService {
    
@@ -110,20 +110,20 @@ module App {
       }
 
       get(id: number): ng.IPromise<App.Api.User> {
-         return this.$http.get('/api/users' + id.ToString()).
-            then((response: ng.IHttpPromiseCallbackArg<App.Api.User>): App.Api.User => {
-               return response.data;
-            });
+         return this.$http.get('/api/users' + id.ToString());
       }
    } 
 }
 {% endhighlight %}
 
-## Use private parameters in constructors
+As you can see, the `userService.get()` method returns a strongly typed User object. Ideally, this typing should be auto-generated on every server code check-in, 
+with unit tests running on every commit to find any breaking changes immediately.
+
+### 4. Use private parameters in constructors
 
 If you are not using private constructor parameters, then you are probably doing this, where you manually map it to the private field of the class:
 
-{% highlight js %}
+{% highlight js linenos %}
 module App {
    export class userService {
    
@@ -147,10 +147,11 @@ module App {
 }
 {% endhighlight %}
 
-Save you time by prefixing constructor parameter with the private keyword parameter. TypeScript will automatically map private constructor parameters for you.
+Save you time by prefixing constructor parameter with the private keyword parameter. 
+TypeScript will automatically map private constructor parameters for you.
 
 
-{% highlight js %}
+{% highlight js linenos %}
 module App {
    export class userService {
    
@@ -170,11 +171,12 @@ module App {
 }
 {% endhighlight %}
 
-## Magic strings are bad
+### 5. Magic strings are bad
 
-Don't use magic strings for controller, service or directive names or any where for that matter. Its a bad practice that will always waste your time. Always keep the name of the service or controller within the class as a static property and refrence it when you define it in angular. Here is an example service.
+Don't use magic strings for controller, service or directive names or any where for that matter. 
+Its a bad practice that will always waste your time. Always keep the name of the service or controller within the class as a static property and reference it when you define it in angular. Here is an example service.
 
-{% highlight js %}
+{% highlight js linenos %}
 module App {
    export class userService {
    
@@ -193,10 +195,9 @@ module App {
 }
 {% endhighlight %}
 
-
 Then, register your service with angular like this:
 
-{% highlight js %}
+{% highlight js linenos %}
 angular.service(App.userService.IName, App.userService);
 {% endhighlight %}
 
