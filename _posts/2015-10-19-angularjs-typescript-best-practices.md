@@ -56,7 +56,8 @@ module App {
 ### 3. Strongly typed Server side API Objects
 
 If you consume Rest APIs on the client side then take type checking to the next level by using <a href="http://type.litesolutions.net/">Typelite</a> for .Net or <a href="http://type.litesolutions.net/">ts-java</a> for Java. 
-Use these tools to generate TypeScript type definitions for server side classes that are returned as Rest Api Responses and include them in your project. 
+Use these tools to generate TypeScript type definitions for server side classes that are returned as Rest API Responses and include them in your project. 
+
 As a example, consider the following C# Class that is returned as response to the get User API call:
 
 {% highlight c# linenos %}
@@ -65,9 +66,9 @@ namespace App.Api
 {
    public class User 
    {
-      public string Name              { get; set; }
-      public DateTime DoB             { get; set; }
-      public List<Address> Addresses  { get; set; }
+      public string Name               { get; set; }
+      public DateTime DoB              { get; set; }
+      public List<Address> Addresses   { get; set; }
    }
    
    public class Address
@@ -88,7 +89,7 @@ declare module App.Api {
       Address: Address[];
    }
    
-   interface Address{
+   interface Address {
       City: string;
       State: string;
    }
@@ -100,7 +101,6 @@ Now, you can use this type definition to define the return type of $http, like t
 {% highlight js linenos %}
 module App {
    export class userService {
-   
       public static IName = "userService";
       public static $inject = ["$http", "$modal"];
 
@@ -197,8 +197,11 @@ module App {
 
 Then, register your service with angular like this:
 
-{% highlight js linenos %}
+{% highlight js %}
 angular.service(App.userService.IName, App.userService);
 {% endhighlight %}
 
+I choose the `IName` out of thin air, choose any name you like.
 
+### 6.More?
+Do you have any best practice that you follow? Let me know in the comments below.
