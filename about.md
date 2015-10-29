@@ -8,5 +8,5 @@ venturing into the webscape, I used to work on server side involving socket prog
 
 Check out me at:
 
-* LinkedIn: http://pk.linkedin.com/in/obaidurrehmann
-* Githib: https://github.com/ObaidUrRehman
+* LinkedIn: <a href ="http://pk.linkedin.com/in/obaidurrehmann">http://pk.linkedin.com/in/obaidurrehmann</a>
+* Githib: <a href ="https://github.com/ObaidUrRehman">https://github.com/ObaidUrRehman</a> 
