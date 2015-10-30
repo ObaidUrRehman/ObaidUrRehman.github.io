@@ -2,8 +2,10 @@
 layout: post
 title: Extending DefinitelyTyped TypeScript Definitions
 ---
-The type definitions at [DefinitelyTyped](http://definitelytyped.org/) are quite extensive and provide full coverage for popular libraries and you will 
-rarely need to extend them. But if you ever need to (which I recently had to) here is how I'd recommend you should approach it.
+The type definitions at [DefinitelyTyped](http://definitelytyped.org/) are quite extensive and provide full coverage for popular libraries. You will 
+rarely need to extend them. But if you ever need to (which I recently had to) here is how I recommend you should approach it.
+
+Obviously its a very bad idea to modify the orignal d.ts files.
 
 I keep all my type definitions in a folder named typings.
 
@@ -28,5 +30,10 @@ declare module ng {
 } 
 
 {% endhighlight %}
+
+The concept to understand here is Declaration Merging. In simple terms, the TypeScript compiler merges two separate 
+declarations declared with the same name into a single definition. The `IRequestShortcutConfig` is already defined 
+in the angular.d.ts file provided by DefinitelyTyped. Both declarations were merged into one. You can read more about 
+declaration Merging [here at TypeScript site](http://www.typescriptlang.org/Handbook#declaration-merging).
 
 
