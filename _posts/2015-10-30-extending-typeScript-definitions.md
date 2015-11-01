@@ -5,6 +5,17 @@ title: Extending DefinitelyTyped TypeScript Definitions
 The type definitions at [DefinitelyTyped](http://definitelytyped.org/) are quite extensive and provide full coverage for popular libraries. You will 
 rarely need to extend them. But if you ever need to (which I recently had to) here is how I recommend you should approach it.
 
+<div class="message">
+  Case In point: I use [angular-loading-bar](https://github.com/chieffancypants/angular-loading-bar), an excellent angular lib to display progress bar on my page. It does that 
+  by intercepting XHR requests. I wanted a particular pooling XHR to not show the loading bar. All I had to do was pass an extra parameter to [$http](https://docs.angularjs.org/api/ng/service/$http#get):
+  
+  {% highlight js %}
+  this.$http.get('/api/notifications/', { ignoreLoadingBar: true});
+  {% endhighlight %}
+  
+  Now the second parameter (which is the config object) is defined in the d.ts as `IRequestShortcutConfig` and it has no definition for the non-standard `ignoreLoadingBar` property.
+</div>
+
 Obviously its a very bad idea to modify the orignal d.ts files.
 
 I keep all my type definitions in a folder named typings.
@@ -20,7 +31,6 @@ As you can see there is a custom.d.ts file. I use this to extend or define my ow
 // angular.d.ts 
 declare module ng {
    interface IRequestShortcutConfig {
-
       /**
         * Ignores this particular XHR requests from showing the loading bar.
         * See: https://github.com/chieffancypants/angular-loading-bar#ignoring-particular-xhr-requests
