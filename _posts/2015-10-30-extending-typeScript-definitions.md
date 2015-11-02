@@ -6,7 +6,7 @@ The type definitions at [DefinitelyTyped](http://definitelytyped.org/) are quite
 rarely need to extend them. But if you ever need to (which I recently had to) here is how I recommend you should approach it.
 
 <div class="message">
-  <strong>Case In point:</strong> I use <a href="angular-loading-bar">https://github.com/chieffancypants/angular-loading-bar</a>, an excellent angular lib to display progress bar on my page. It does that 
+  <strong>Case In point:</strong> I use <a href="https://github.com/chieffancypants/angular-loading-bar">angular-loading-bar</a>, an excellent angular lib to display progress bar on my page. It does that 
   by intercepting XHR requests. I wanted a particular pooling XHR to not show the loading bar. All I had to do was pass an extra parameter to <a href="https://docs.angularjs.org/api/ng/service/$http#get">$http:</a> 
   
   {% highlight js %}
