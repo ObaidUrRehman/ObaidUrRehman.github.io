@@ -13,7 +13,7 @@ rarely need to extend them. But if you ever need to (which I recently had to) he
   this.$http.get('/api/notifications/', { ignoreLoadingBar: true});
   {% endhighlight %}
   
-  Now the second parameter (which is the config object) is defined in the d.ts as `IRequestShortcutConfig` and it has no definition for the non-standard `ignoreLoadingBar` property.
+  Now the second parameter (which is the config object) is defined in the d.ts as <code>IRequestShortcutConfig</code> and it has no definition for the non-standard `ignoreLoadingBar` property.
 </div>
 
 Obviously its a very bad idea to modify the orignal d.ts files.
