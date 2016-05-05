@@ -1,0 +1,34 @@
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           /:title
+
+# Setup
+title:               Obaid ur Rehman
+tagline:             Frontend Developer with Backend Expertise.
+url:                 http://obaidurrehman.github.io/
+paginate:            3
+baseurl:             ""
+
+# Assets
+#
+# We specify the directory for Jekyll so we can use @imports.
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+# About/contact
+author:
+  name:              Obaid ur Rehman
+  url:               https://twitter.com/obaidurrehmann
+  email:             obaid@live.com
+
+# Custom vars
+version:             2.0.0
+github:
+  repo:              https://github.com/ObaidurRehman
+
+# Page links on the header
+pages_list:       
+  About: '/about'
+  Feed: '/atom.xml'
