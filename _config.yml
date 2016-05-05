@@ -76,19 +76,4 @@ sass:
     style: compressed
     sass_dir: _sass
 
-# Scopes
-defaults:
-    -
-        scope:
-            path:   ""
-            type:   "pages"
-        values:
-            layout: "page"
-    -
-        scope:
-            path:   ""
-            type:   "posts"
-        values:
-            layout: "post"
 
-exclude: [vendor] # For travis ci
