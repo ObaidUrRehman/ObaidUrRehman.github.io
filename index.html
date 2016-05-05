@@ -2,22 +2,39 @@
 layout: default
 ---
 
-{% include intro.html %}
+<div class="home">
 
-<section class="post-list">
-    <div class="container">
-        {% for post in paginator.posts %}
-            <div class="post-preview">
-                <span class="post-title alignable pull-left">
-                    <a class="post-link underline" href="{{ post.url | prepend: site.baseurl }}">
-                        {{ post.title }}
-                    </a>
-                </span>
-                <span class="post-time alignable pull-right">
-                    <time>{{ post.date | date: '%B %d, %Y '}}</time>
-                </span>
-                <div style="clear:both"></div>
-            </div>
-        {% endfor %}
+
+  {% for post in site.posts%}
+  <div class="post postContent">
+    <div  class="postDate"><time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%b %-d, %Y" }}</time>
     </div>
-</section>
+    <div class="postDay">
+      {{post.tag}}
+    </div>
+    <br>
+    <div class="postTitle">
+    <a class='postLink' href="{{post.url}}">{{post.title}}</a>
+    </div>
+    <div class="postExt">
+   {{ post.content | strip_html | truncatewords:20}}
+    </div>
+  </div>
+
+
+  {% endfor %}
+  <!--<ul class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-meta-main">{{ post.date | date: "%b %-d, %Y" }}</span>
+
+        <h2>
+          <a class="post-link-main" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>-->
+
+
+
+</div>
