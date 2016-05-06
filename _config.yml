@@ -1,13 +1,11 @@
 # Permalinks
-#
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           /:title
+permalink:           pretty
 
 # Setup
-title:               Obaid ur Rehman
-tagline:             Frontend Developer with Backend Expertise.
-url:                 http://obaidurrehman.github.io/
-paginate:            3
+title:               Poole
+tagline:             The Jekyll Butler
+url:                 http://getpoole.com
+paginate:            1
 baseurl:             ""
 
 # Assets
@@ -19,16 +17,16 @@ sass:
 
 # About/contact
 author:
-  name:              Obaid ur Rehman
-  url:               https://twitter.com/obaidurrehmann
-  email:             obaid@live.com
+  name:              Mark Otto
+  url:               https://twitter.com/mdo
+  email:             markdotto@gmail.com
 
 # Custom vars
 version:             2.0.0
 github:
-  repo:              https://github.com/ObaidurRehman
+  repo:              https://github.com/poole/poole
 
-# Page links on the header
-pages_list:       
-  About: '/about'
-  Feed: '/atom.xml'
+# Gems
+gems:
+  - jekyll-paginate
+  - jekyll-gist
