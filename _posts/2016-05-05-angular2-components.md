@@ -30,10 +30,11 @@ export class DemoComponent {
 
 A couple of points here:
 
-* As you can see we have imported <code>Component</code> from the angular library. It is used a decorator to add metadata with our component class so
+* As you can see we have imported <code>Component</code> from the angular library. It is used to decorate and add metadata to our component class so
   when Angular bootstraps our application it knows what type it is.
 * The <code>selector</code> is what tells the angular to watch out for in the DOM and replace it with the template of our component. 
 * The <code>template</code> hold our html that is eventually rendered to the view. We can also use <code>templateUrl</code> and move our html out of of the ts typescript file. This is something you would want to do when you template grows big and want to maintain a separation of concerns.
+* A you may have noticed the <code>name</code> is a property of our component class and is available in the template through interpolation. 
 
 In our html using this component is simply a matter of using it like this:
 
@@ -73,7 +74,7 @@ export class DemoComponent implements OnInit {
 {% endhighlight %}
 
 
-### @Input and @Output Properties
+### Passing data to component via @Input and @Output Properties
 The component we created is a very simple one. Now lets suppose we want that name property to be provided externally (by some other component) so we can
 possibly use it with multiple names and as a reusable component. Here is where the @Input property comes into play.
 
@@ -107,7 +108,46 @@ The output property as you might have guessed is the exact opposite that allows 
 
 ### Injecting services into components
 
-###
+Dependency Injection comes into play when your component is dependent on some other component. Angular2,s DI is vastly different 
+from the one in Angular2 and you can find more details in the <a href='https://angular.io/docs/ts/latest/guide/dependency-injection.html'>docs</a>. Lets suppose you want to fetch
+some json data from a rest Api. The answer to that is the <a href ='https://angular.io/docs/ts/latest/api/http/Http-class.html'>Http</a>. To use the http service you will need to inject in your component. Here is how you do it:
+
+{% highlight js %}
+import {Component, OnInit, Input} from '@angular/core';
+
+@Component({
+  selector: 'demo-component',
+  template: '<div>Hello my name is {{name}}. <button (click)="displayName()">Say My Name</button></div>',
+  providers: [HTTP_SERVICE]
+})
+export class DemoComponent implements OnInit {
+  name: string;
+  @input name;
+  
+  ngOnInit() { 
+     
+  }
+  
+  constructor(http: Http) {
+    
+  }
+  
+  displayName() {
+    alert('My name is', this.name)
+  }
+}
+{% endhighlight %}
+
+Point to note:
+
+* The HTTP_PROVIDER enabled the angular to determine that this compoent will need http service.
+* The constructor takes the Http service as a parameter which the Angular runtime provides while new-ing the component object.
+ 
+### Conclusion
+A lot has changed in Angular2 and we have barely scratched the surface. It might seem intimidating at first but once you get used to
+this component notion, there is no going back since it really help you keeping you code clean and well-defined.
+
+
 
 
 
