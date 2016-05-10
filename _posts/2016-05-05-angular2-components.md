@@ -122,7 +122,7 @@ Dependency Injection comes into play when your component is dependent on some ot
 from the one in Angular2 and you can find more details in the <a href='https://angular.io/docs/ts/latest/guide/dependency-injection.html'>docs</a>.
 Lets suppose you might want to set the title of the browser bar, here is how you would inject the <code>Title</code> service:
 
-{% highlight js %}
+{% highlight ts %}
 import { Component, OnInit, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
 
 Point to note:
 
-* The constructor takes the Http service as a parameter which the Angular runtime provides while new-ing the component object.
+* The constructor takes the <code>Title</code> service as a parameter which the Angular runtime provides while new-ing the component object.
 
 This example comes from the <a href='https://angular.io/docs/ts/latest/cookbook/set-document-title.html'>Angular2 cookbook</a>.
  
