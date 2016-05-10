@@ -110,37 +110,34 @@ export class AppComponent implements OnInit {
 Now, to pass data to your template you simple pass it as:
 
 {% highlight html %}
-<app-component></app-component>
+<app-component [name]="'Obaid'"></app-component>
 {% endhighlight %}
 
-
-
 The output property as you might have guessed is the exact opposite that allows a component to emit an event that may have a value.
+You can learn more about it at the <a href='https://angular.io/docs/ts/latest/cookbook/component-communication.html'>Angular2 docs</a>
 
 ### Injecting services into components
 
-Dependency Injection comes into play when your component is dependent on some other component. Angular2,s DI is vastly different 
-from the one in Angular2 and you can find more details in the <a href='https://angular.io/docs/ts/latest/guide/dependency-injection.html'>docs</a>. Lets suppose you want to fetch
-some json data from a rest Api. The answer to that is the <a href ='https://angular.io/docs/ts/latest/api/http/Http-class.html'>Http</a>. To use the http service you will need to inject in your component. Here is how you do it:
+Dependency Injection comes into play when your component is dependent on some other component. Angular2's DI is vastly different 
+from the one in Angular2 and you can find more details in the <a href='https://angular.io/docs/ts/latest/guide/dependency-injection.html'>docs</a>.
+Lets suppose you might want to set the title of the browser bar, here is how you would inject the <code>Title</code> service:
 
 {% highlight js %}
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'demo-component',
-  template: '<div>Hello my name is {{name}}. <button (click)="displayName()">Say My Name</button></div>',
-  providers: [HTTP_SERVICE]
+  selector: 'app-component',
+  template:`<div>Hello my name is {{name}} . <button (click)="displayName()">Say My Name</button></div>`
 })
-export class DemoComponent implements OnInit {
-  name: string;
-  @input name;
-  
-  ngOnInit() { 
-     
+export class AppComponent implements OnInit {
+  @Input() name: string;
+   
+  constructor(private titleService: Title) {
   }
   
-  constructor(http: Http) {
-    
+  ngOnInit() { 
+    this.titleService.setTitle(name);
   }
   
   displayName() {
@@ -151,8 +148,9 @@ export class DemoComponent implements OnInit {
 
 Point to note:
 
-* The HTTP_PROVIDER enabled the angular to determine that this compoent will need http service.
 * The constructor takes the Http service as a parameter which the Angular runtime provides while new-ing the component object.
+
+This example comes from the <a href='https://angular.io/docs/ts/latest/cookbook/set-document-title.html'>Angular2 cookbook</a>.
  
 ### Conclusion
 A lot has changed in Angular2 and we have barely scratched the surface. It might seem intimidating at first but once you get used to
