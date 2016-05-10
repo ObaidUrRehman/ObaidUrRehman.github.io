@@ -9,23 +9,25 @@ In Angular2 components are the basic building block that we use to build and spe
 With that being said, lets dive into some code and build our first component that renders our message on the view that is defined as a property of the component:
 
 {% highlight js %}
-import {Component} from 'angular2/angular2'
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'demo-component',
-  template: '<div>Hello my name is {{name}}. <button (click)="displayName()">Say My Name</button></div>'
+  selector: 'app-component',
+  template:`<div>Hello my name is {{name}} . <button (click)="displayName()">Say My Name</button></div>`
 })
-export class DemoComponent {
+export class AppComponent {
   name: string;
   
   constructor() {
-    this.name = 'Adnan'
+    this.name = 'Adnan';
   }
   
   displayName() {
     alert('My name is', this.name)
   }
+  
 }
+
 {% endhighlight %}
 
 A couple of points here:
@@ -39,7 +41,7 @@ A couple of points here:
 In our html using this component is simply a matter of using it like this:
 
 {% highlight html %}
-<demo-component></demo-component>
+<app-component></app-component>
 {% endhighlight %}
 
 ### Component Lifecycle
@@ -52,27 +54,28 @@ When the Angular framework instantiates a component it calls the constructor of 
 Lets make use of the <code>ngInit()</code> hook and move our name property initialization there. We want to keep the constructor clear of any initializations and new-ings.
 
 {% highlight js %}
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'demo-component',
-  template: '<div>Hello my name is {{name}}. <button (click)="displayName()">Say My Name</button></div>'
+  selector: 'app-component',
+  template:`<div>Hello my name is {{name}} . <button (click)="displayName()">Say My Name</button></div>`
 })
-export class DemoComponent implements OnInit {
+export class AppComponent implements OnInit {
   name: string;
   
-  ngOnInit() { 
-    this.name = 'Adnan'; 
+  constructor() {
   }
   
-  constructor() {
-    
+   ngOnInit() { 
+    this.name = 'Adnan'; 
   }
   
   displayName() {
     alert('My name is', this.name)
   }
+  
 }
+
 {% endhighlight %}
 
 
@@ -82,21 +85,19 @@ possibly use it with multiple names and as a reusable component. Here is where t
 
 
 {% highlight js %}
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'demo-component',
-  template: '<div>Hello my name is {{name}}. <button (click)="displayName()">Say My Name</button></div>'
+  selector: 'app-component',
+  template:`<div>Hello my name is {{name}} . <button (click)="displayName()">Say My Name</button></div>`
 })
-export class DemoComponent implements OnInit {
-  name: string;
-  @input name;
-  
-  ngOnInit() { 
-     
+export class AppComponent implements OnInit {
+  @Input() name: string;
+   
+  constructor() {
   }
   
-  constructor() {
+   ngOnInit() { 
     
   }
   
@@ -105,6 +106,14 @@ export class DemoComponent implements OnInit {
   }
 }
 {% endhighlight %}
+
+Now, to pass data to your template you simple pass it as:
+
+{% highlight html %}
+<app-component></app-component>
+{% endhighlight %}
+
+
 
 The output property as you might have guessed is the exact opposite that allows a component to emit an event that may have a value.
 
