@@ -47,7 +47,7 @@ In our html using this component is simply a matter of using it like this:
 When the Angular framework instantiates a component it calls the constructor of our component class and may inject some other required object if specified. Before and after that constructor is called it goes through a series of steps that we can track by hooking into the lifecycle of a component. You can find a full list of Lifecycle Hooks at <a href="https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html">Angular Docs</a>. The following diagram sums up the component lifecycle:
 
 
-![Folder Structure](/images/angular2-component-lifecycle.png "Angular2 Component Lifecycle")
+![Angular2 Component Lifecycle](/images/angular2-component-lifecycle.png "Angular2 Component Lifecycle")
 
 Lets make use of the <code>ngInit()</code> hook and move our name property initialization there. We want to keep the constructor clear of any initializations and new-ings.
 
