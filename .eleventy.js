@@ -5,6 +5,12 @@ module.exports = function(eleventyConfig) {
   // Copy CNAME file to output for GitHub Pages
   eleventyConfig.addPassthroughCopy("CNAME");
   
+  // Copy favicon and touch icons
+  eleventyConfig.addPassthroughCopy("favicon.ico");
+  eleventyConfig.addPassthroughCopy("android-chrome-192x192.png");
+  eleventyConfig.addPassthroughCopy("android-chrome-512x512.png");
+  eleventyConfig.addPassthroughCopy("apple-touch-icon.png");
+  
   // Copy any other static files
   eleventyConfig.addPassthroughCopy("src/**/*.png");
   eleventyConfig.addPassthroughCopy("src/**/*.jpg");
