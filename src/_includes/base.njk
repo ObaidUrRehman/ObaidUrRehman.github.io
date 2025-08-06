@@ -271,17 +271,32 @@
 
         /* Mobile Menu Animation */
         #mobile-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
             visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            transform: translateY(-20px);
+        }
+        
+        .dark #mobile-menu {
+            background: rgba(17, 24, 39, 0.98);
         }
         
         #mobile-menu.show {
-            max-height: 300px;
             opacity: 1;
             visibility: visible;
+            transform: translateY(0);
         }
 
         /* Mobile Menu Link Hover Effects */
@@ -389,12 +404,19 @@
         </div>
 
         <!-- Mobile Navigation Menu - Hidden -->
-        <div id="mobile-menu" class="bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 shadow-lg">
-            <div class="px-6 py-6 space-y-6 text-center">
-                <a href="#about" class="block text-lg font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer py-3 border-b border-gray-100 dark:border-gray-800 transform transition-all duration-300 hover:translate-x-2">About</a>
-                <a href="#experience" class="block text-lg font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer py-3 border-b border-gray-100 dark:border-gray-800 transform transition-all duration-300 hover:translate-x-2">Experience</a>
-                <a href="#projects" class="block text-lg font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer py-3 border-b border-gray-100 dark:border-gray-800 transform transition-all duration-300 hover:translate-x-2">Projects</a>
-                <a href="#contact" class="block text-lg font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer py-3 transform transition-all duration-300 hover:translate-x-2">Contact</a>
+        <div id="mobile-menu">
+            <!-- Close Button -->
+            <button id="mobile-menu-close" class="absolute top-6 right-6 p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 cursor-pointer">
+                <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <div class="flex flex-col items-center justify-center space-y-8 text-center">
+                <a href="#about" class="text-3xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 transform hover:scale-110 cursor-pointer">About</a>
+                <a href="#experience" class="text-3xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 transform hover:scale-110 cursor-pointer">Experience</a>
+                <a href="#projects" class="text-3xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 transform hover:scale-110 cursor-pointer">Projects</a>
+                <a href="#contact" class="text-3xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 transform hover:scale-110 cursor-pointer">Contact</a>
             </div>
         </div>
     </nav>
@@ -479,32 +501,47 @@
                 console.log('Theme toggle mousedown!');
             });
             
-            // Mobile menu toggle functionality
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if (mobileMenuToggle && mobileMenu) {
-                mobileMenuToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Toggle the menu with animation
-                    if (mobileMenu.classList.contains('show')) {
-                        // Close menu
-                        mobileMenu.classList.remove('show');
-                    } else {
-                        // Open menu
-                        mobileMenu.classList.add('show');
-                    }
-                });
+                         // Mobile menu toggle functionality
+             const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+             const mobileMenu = document.getElementById('mobile-menu');
+             const mobileMenuClose = document.getElementById('mobile-menu-close');
+             
+             if (mobileMenuToggle && mobileMenu) {
+                 mobileMenuToggle.addEventListener('click', (e) => {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     
+                     // Open menu
+                     mobileMenu.classList.add('show');
+                 });
+             }
+             
+             // Close button functionality
+             if (mobileMenuClose && mobileMenu) {
+                 mobileMenuClose.addEventListener('click', (e) => {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     
+                     // Close menu
+                     mobileMenu.classList.remove('show');
+                 });
+             }
 
-                // Close mobile menu when clicking on a link
-                document.querySelectorAll('#mobile-menu a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.remove('show');
-                    });
-                });
-            }
+             // Close mobile menu when clicking on a link
+             if (mobileMenu) {
+                 document.querySelectorAll('#mobile-menu a').forEach(link => {
+                     link.addEventListener('click', () => {
+                         mobileMenu.classList.remove('show');
+                     });
+                 });
+                 
+                 // Close menu when clicking outside the menu content
+                 mobileMenu.addEventListener('click', (e) => {
+                     if (e.target === mobileMenu) {
+                         mobileMenu.classList.remove('show');
+                     }
+                 });
+             }
 
             // Smooth scrolling for navigation links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
