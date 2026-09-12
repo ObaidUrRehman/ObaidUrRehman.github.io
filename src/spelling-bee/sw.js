@@ -1,9 +1,9 @@
-const CACHE_NAME = 'sbc-cache-v6';
+const CACHE_NAME = 'sbc-cache-v8';
 const CORE_ASSETS = [
   './',
   './index.html',
-  './style.css?v=5',
-  './app.js?v=6',
+  './style.css?v=7',
+  './app.js?v=8',
   './words.json',
   './manifest.json',
   './assets/icon.svg',

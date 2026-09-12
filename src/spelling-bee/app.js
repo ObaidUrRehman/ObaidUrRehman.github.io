@@ -90,7 +90,10 @@
   const transcriptPlaceholder = el('transcriptPlaceholder');
   const typeInsteadBtn = el('typeInsteadBtn');
   const typeFallback = el('typeFallback');
-  const typeInput = el('typeInput');
+  const typedDisplay = el('typedDisplay');
+  const typedPlaceholder = el('typedPlaceholder');
+  const kbGrid = el('kbGrid');
+  const kbBackspace = el('kbBackspace');
   const typeSubmitBtn = el('typeSubmitBtn');
   const revealWord = el('revealWord');
   const feedbackCorrect = el('feedbackCorrect');
@@ -413,6 +416,47 @@
     return (raw || '').toUpperCase().replace(/[^A-Z]/g, '');
   }
 
+  // On-screen A-Z keyboard, built once — used instead of a native text
+  // input so a kid's device keyboard (with its own autocorrect/spell-check,
+  // which spellcheck="false" doesn't reliably suppress on mobile) can't
+  // interfere with a spelling test.
+  let typedBuffer = [];
+  const MAX_TYPED_LETTERS = 24;
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach((letter) => {
+    const key = document.createElement('button');
+    key.type = 'button';
+    key.className = 'icon-btn kb-key';
+    key.textContent = letter;
+    key.setAttribute('aria-label', 'Letter ' + letter);
+    key.addEventListener('click', () => {
+      if (typedBuffer.length >= MAX_TYPED_LETTERS) return;
+      typedBuffer.push(letter);
+      renderTypedDisplay();
+    });
+    kbGrid.appendChild(key);
+  });
+  function renderTypedDisplay() {
+    typedDisplay.innerHTML = '';
+    if (!typedBuffer.length) {
+      typedDisplay.appendChild(typedPlaceholder);
+      return;
+    }
+    typedBuffer.forEach((letter) => {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.textContent = letter;
+      typedDisplay.appendChild(tile);
+    });
+  }
+  function clearTypedBuffer() {
+    typedBuffer = [];
+    renderTypedDisplay();
+  }
+  kbBackspace.addEventListener('click', () => {
+    typedBuffer.pop();
+    renderTypedDisplay();
+  });
+
   function playWordAudio() {
     const w = currentTestWord();
     if (!w) return;
@@ -461,7 +505,7 @@
     feedbackWrong.hidden = true;
     nextWordBtn.hidden = true;
     tryAgainBtn.hidden = true;
-    typeInput.value = '';
+    clearTypedBuffer();
     if (!sttSupported) typeFallback.hidden = false;
     micLabel.textContent = sttSupported ? 'Tap and spell it out loud' : 'Type the spelling below';
   }
@@ -544,7 +588,6 @@
       void micRing.offsetWidth;
       micRing.classList.add('pop');
       typeFallback.hidden = false;
-      typeInput.focus();
       return;
     }
     recognizing = true;
@@ -558,16 +601,12 @@
 
   typeInsteadBtn.addEventListener('click', () => {
     typeFallback.hidden = !typeFallback.hidden;
-    if (!typeFallback.hidden) typeInput.focus();
   });
   function submitTyped() {
-    if (!typeInput.value.trim()) return;
-    evaluateAnswer(typeInput.value);
+    if (!typedBuffer.length) return;
+    evaluateAnswer(typedBuffer.join(''));
   }
   typeSubmitBtn.addEventListener('click', submitTyped);
-  typeInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); submitTyped(); }
-  });
 
   function goToTest(delta) {
     if (!testQueue.length) return;
@@ -586,11 +625,11 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let audioCtx;
   const SOUND_PARAMS = {
-    a: { chimeType: 'sine', chimeStep: 0.09, buzzType: 'sawtooth', buzzStart: 220, buzzEnd: 110, buzzDur: 0.32 },
-    b: { chimeType: 'square', chimeStep: 0.07, buzzType: 'square', buzzStart: 200, buzzEnd: 70, buzzDur: 0.3 },
-    c: { chimeType: 'sine', chimeStep: 0.11, buzzType: 'triangle', buzzStart: 300, buzzEnd: 160, buzzDur: 0.3 },
-    d: { chimeType: 'triangle', chimeStep: 0.08, buzzType: 'square', buzzStart: 150, buzzEnd: 80, buzzDur: 0.15 },
-    e: { chimeType: 'triangle', chimeStep: 0.08, buzzType: 'square', buzzStart: 150, buzzEnd: 80, buzzDur: 0.15 },
+    a: { chimeType: 'sine', chimeStep: 0.09 },
+    b: { chimeType: 'square', chimeStep: 0.07 },
+    c: { chimeType: 'sine', chimeStep: 0.11 },
+    d: { chimeType: 'triangle', chimeStep: 0.08 },
+    e: { chimeType: 'triangle', chimeStep: 0.08 },
   };
   const CONFETTI_PALETTES = {
     a: ['#F2A62B', '#E08E00', '#3FA34D', '#E0592A', '#7A4B00'],
@@ -622,22 +661,46 @@
     } catch (e) {}
   }
 
+  // A loud, unmistakable "sad trombone" fail sting — three descending notes,
+  // each with a comedic downward slide, the last one held and wobbling.
+  // Synthesized from scratch (an old vaudeville melodic gag, not a sampled
+  // meme clip) so it's free to use and deliberately louder/goofier than the
+  // rest of the app's sounds — same for every visual style, on purpose.
   function playBuzz() {
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      const params = SOUND_PARAMS[currentVariant];
       const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = params.buzzType;
-      osc.frequency.setValueAtTime(params.buzzStart, now);
-      osc.frequency.exponentialRampToValueAtTime(params.buzzEnd, now + params.buzzDur);
-      gain.gain.setValueAtTime(0.16, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + params.buzzDur + 0.04);
-      osc.connect(gain).connect(audioCtx.destination);
-      osc.start(now);
-      osc.stop(now + params.buzzDur + 0.06);
+      const notes = [
+        { freq: 440.00, glideTo: 415.30, start: 0.00, dur: 0.22, gain: 0.28 },
+        { freq: 349.23, glideTo: 329.63, start: 0.20, dur: 0.22, gain: 0.30 },
+        { freq: 277.18, glideTo: 246.94, start: 0.40, dur: 0.62, gain: 0.34 },
+      ];
+      notes.forEach((n, i) => {
+        const start = now + n.start;
+        const end = start + n.dur;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(n.freq, start);
+        osc.frequency.exponentialRampToValueAtTime(n.glideTo, end);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(n.gain, start + 0.03);
+        gain.gain.setValueAtTime(n.gain, end - 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.0001, end);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(start);
+        osc.stop(end + 0.02);
+        if (i === notes.length - 1) {
+          const vibrato = audioCtx.createOscillator();
+          const vibratoGain = audioCtx.createGain();
+          vibrato.frequency.value = 7;
+          vibratoGain.gain.value = 8;
+          vibrato.connect(vibratoGain).connect(osc.frequency);
+          vibrato.start(start + 0.08);
+          vibrato.stop(end + 0.02);
+        }
+      });
     } catch (e) {}
   }
 
@@ -843,6 +906,38 @@
     installBtn.hidden = true;
   });
   window.addEventListener('appinstalled', () => { installBtn.hidden = true; });
+
+  /* ============================================================
+     Swipe navigation — left/right on the Learn or Test card moves
+     between words, same as the ‹ › arrows. Pointer Events cover touch
+     and mouse alike; only a mostly-horizontal drag past the threshold
+     counts, so normal taps on buttons inside the card are unaffected.
+  ============================================================ */
+  function enableSwipeNav(container, onSwipeLeft, onSwipeRight) {
+    if (!container) return;
+    const THRESHOLD = 48;
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+    container.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      startX = e.clientX;
+      startY = e.clientY;
+      tracking = true;
+    });
+    container.addEventListener('pointerup', (e) => {
+      if (!tracking) return;
+      tracking = false;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (Math.abs(dx) > THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        if (dx < 0) onSwipeLeft(); else onSwipeRight();
+      }
+    });
+    container.addEventListener('pointercancel', () => { tracking = false; });
+  }
+  enableSwipeNav(learnPanel.querySelector('.immersive-stage'), () => stepLearn(1), () => stepLearn(-1));
+  enableSwipeNav(testPanel.querySelector('.immersive-stage'), () => goToTest(1), () => goToTest(-1));
 
   /* ============================================================
      Initial render

@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Spelling Bee">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 
@@ -140,8 +140,14 @@
 
         <button class="type-instead" id="typeInsteadBtn">⌨️ Having trouble? Type it instead</button>
         <div class="type-fallback" id="typeFallback" hidden>
-          <input type="text" id="typeInput" placeholder="type the spelling…" autocomplete="off" autocapitalize="off" spellcheck="false">
-          <button class="btn good" id="typeSubmitBtn" type="button">Check</button>
+          <div class="typed-display" id="typedDisplay">
+            <span class="typed-placeholder" id="typedPlaceholder">Tap letters to spell it</span>
+          </div>
+          <div class="kb-grid" id="kbGrid"></div>
+          <div class="kb-controls">
+            <button class="btn ghost" id="kbBackspace" type="button">⌫ Delete</button>
+            <button class="btn good" id="typeSubmitBtn" type="button">✅ Check</button>
+          </div>
         </div>
 
         <div class="reveal-word" id="revealWord" hidden></div>
@@ -202,7 +208,7 @@
 
 <canvas id="confettiCanvas" style="position:fixed; inset:0; z-index:200; pointer-events:none; display:none;"></canvas>
 
-<script src="app.js?v=6" defer></script>
+<script src="app.js?v=8" defer></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
