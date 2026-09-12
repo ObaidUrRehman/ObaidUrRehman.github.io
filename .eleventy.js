@@ -17,7 +17,12 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/**/*.jpeg");
   eleventyConfig.addPassthroughCopy("src/**/*.gif");
   eleventyConfig.addPassthroughCopy("src/**/*.svg");
-  
+
+  // Spelling Bee: a fully independent static app, copied through as-is
+  // (not templated by Nunjucks — see .eleventyignore for the matching
+  // exclusion from page processing).
+  eleventyConfig.addPassthroughCopy("src/spelling-bee");
+
   return {
     dir: {
       input: "src",
