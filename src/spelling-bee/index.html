@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Spelling Bee">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
@@ -138,7 +138,7 @@
         <p class="mic-label" id="transcriptPlaceholder">Your spelling will appear here</p>
         <div class="transcript" id="transcript" hidden></div>
 
-        <button class="type-instead" id="typeInsteadBtn">⌨️ Having trouble? Type it instead</button>
+        <button class="icon-btn" id="typeInsteadBtn" style="margin:8px auto;">⌨️ Type Instead</button>
         <div class="type-fallback" id="typeFallback" hidden>
           <div class="typed-display" id="typedDisplay">
             <span class="typed-placeholder" id="typedPlaceholder">Tap letters to spell it</span>
@@ -208,7 +208,7 @@
 
 <canvas id="confettiCanvas" style="position:fixed; inset:0; z-index:200; pointer-events:none; display:none;"></canvas>
 
-<script src="app.js?v=8" defer></script>
+<script src="app.js?v=9" defer></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

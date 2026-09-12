@@ -237,7 +237,6 @@ h1,h2,h3{font-family:'Baloo 2',system-ui,sans-serif; text-wrap:balance; margin:0
 }
 
 .type-fallback{margin:10px 0 4px;}
-.type-instead{font-size:12.5px; color:var(--ink-soft); font-weight:700; text-decoration:underline; background:none; border:none; cursor:pointer; margin-bottom:6px;}
 
 .typed-display{
   display:flex; gap:5px; justify-content:center; flex-wrap:wrap;
