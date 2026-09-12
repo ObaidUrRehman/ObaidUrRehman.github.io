@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ebad's Spelling Bee Coach</title>
+<meta name="description" content="Learn and test spelling-bee words with syllable breakdowns, meanings, and voice-based testing.">
+<meta name="theme-color" content="#F2A62B">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Spelling Bee">
+<link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+
+<div class="game-bg" id="gameBg"></div>
+
+<div class="shell" id="dashboardPanel">
+  <div class="topbar">
+    <div class="brand">
+      <div class="badge"><img src="assets/icon.svg" alt="" width="44" height="44"></div>
+      <div class="brand-text">
+        <h1>Ebad's Spelling Bee Coach</h1>
+        <p>Get ready for Bee Day</p>
+      </div>
+    </div>
+    <div class="icon-btn-row">
+      <button class="theme-btn" id="installBtn" aria-label="Install app" hidden>📲</button>
+      <button class="theme-btn variant-btn" id="variantToggle" aria-label="Choose a different look">🎨</button>
+      <button class="theme-btn" id="themeToggle" aria-label="Switch to dark mode">🌓</button>
+    </div>
+  </div>
+
+  <p class="note" id="dataNote" hidden></p>
+
+  <div class="cta-row">
+    <button class="btn primary" id="openLearnBtn">📖 Learn</button>
+    <button class="btn good" id="openTestBtn">📝 Test</button>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat learned"><div class="num" id="learnedNum">0/0</div><div class="lbl">Learned</div></div>
+    <div class="stat mastered"><div class="num" id="masteredNum">0/0</div><div class="lbl">Mastered</div></div>
+    <div class="stat countdown"><div class="num" id="countdownNum">–</div><div class="lbl" id="countdownLbl">Days to Bee Day</div></div>
+  </div>
+
+  <div class="section-head">
+    <h3>Your hive</h3>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--surface-2); border:1px solid var(--line);"></i>New</span>
+      <span><i class="dot" style="background:var(--accent);"></i>Learning</span>
+      <span><i class="dot" style="background:var(--good);"></i>Mastered</span>
+    </div>
+  </div>
+  <div class="hive" id="hive"></div>
+</div>
+
+<!-- LEARN (immersive, full takeover) -->
+<div class="immersive" id="learnPanel">
+  <div class="immersive-topbar">
+    <button class="exit-btn" data-close aria-label="Exit to dashboard">✕</button>
+    <div class="nav-cluster">
+      <button class="nav-arrow" id="learnPrevBtn" aria-label="Previous word">‹</button>
+      <span class="progress-chip" id="learnProgress">Word 1 of 1</span>
+      <button class="nav-arrow" id="learnNextBtn" aria-label="Next word">›</button>
+    </div>
+    <span class="spacer-40"></span>
+  </div>
+  <div class="immersive-stage">
+    <div class="stage-col">
+      <div class="empty-state" id="learnEmptyState" hidden>
+        <h3>No words yet</h3>
+        <p>Add words to <code>words.json</code> to get started.</p>
+      </div>
+      <div class="flip-card" id="flipCard">
+        <div class="flip-inner" id="flipInner">
+          <div class="card face front">
+            <span class="kicker">Tap to hear it</span>
+            <div class="word" id="learnWord">word</div>
+            <div class="syllables" id="learnSyllables">syl&nbsp;•&nbsp;la&nbsp;•&nbsp;bles</div>
+            <div class="icon-row">
+              <button class="icon-btn" id="hearWordBtn">🔊 Hear Word</button>
+              <button class="icon-btn" id="hearSyllablesBtn">🔤 Hear Syllables</button>
+              <button class="icon-btn flip-btn" data-flip="true">🔄 Flip Card</button>
+            </div>
+            <div class="card-actions">
+              <button class="btn good learned-btn">✅ I've Learned This</button>
+            </div>
+          </div>
+          <div class="card face back">
+            <span class="kicker">Meaning</span>
+            <p class="meaning" id="learnMeaning">Meaning goes here.</p>
+            <p class="example" id="learnExample">"Example sentence."</p>
+            <div class="icon-row">
+              <button class="icon-btn" id="hearMeaningBtn">🔊 Hear Meaning</button>
+              <button class="icon-btn flip-btn" data-flip="true">🔄 Flip Back</button>
+            </div>
+            <div class="card-actions">
+              <button class="btn good learned-btn">✅ I've Learned This</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEST (immersive, full takeover) -->
+<div class="immersive" id="testPanel">
+  <div class="immersive-topbar">
+    <button class="exit-btn" data-close aria-label="Exit to dashboard">✕</button>
+    <div class="nav-cluster">
+      <button class="nav-arrow" id="testPrevBtn" aria-label="Previous word">‹</button>
+      <span class="progress-chip" id="testProgress">Word 1 of 1</span>
+      <button class="nav-arrow" id="testNextBtn" aria-label="Next word">›</button>
+    </div>
+    <span class="spacer-40"></span>
+  </div>
+  <div class="immersive-stage">
+    <div class="stage-col">
+      <div class="empty-state" id="testEmptyState" hidden>
+        <h3>Nothing to test yet</h3>
+        <p>Learn a word first, then come back to test it.</p>
+      </div>
+      <div class="card" id="testCard">
+        <span class="kicker">Listen, then spell it out loud</span>
+        <button class="play-ring" id="playRing" aria-label="Play the word"><span>🔊</span></button>
+        <button class="icon-btn" id="playSentenceBtn" style="margin:2px auto 0;">🗣️ Use in a Sentence</button>
+
+        <div class="mic-wrap">
+          <button class="mic-ring" id="micRing" aria-label="Tap and spell it out loud"><span>🎤</span></button>
+          <div class="mic-label" id="micLabel">🔊 Listen carefully…</div>
+        </div>
+
+        <p class="mic-label" id="transcriptPlaceholder">Your spelling will appear here</p>
+        <div class="transcript" id="transcript" hidden></div>
+
+        <button class="type-instead" id="typeInsteadBtn">⌨️ Having trouble? Type it instead</button>
+        <div class="type-fallback" id="typeFallback" hidden>
+          <input type="text" id="typeInput" placeholder="type the spelling…" autocomplete="off" autocapitalize="off" spellcheck="false">
+          <button class="btn good" id="typeSubmitBtn" type="button">Check</button>
+        </div>
+
+        <div class="reveal-word" id="revealWord" hidden></div>
+        <div class="feedback correct" id="feedbackCorrect" hidden>
+          <div class="fb-emoji">🎉</div>
+          <div>
+            <p class="fb-title">Correct! Nicely spelled.</p>
+            <p class="fb-sub" id="feedbackCorrectSub">Moved to Mastered — next word coming up.</p>
+          </div>
+        </div>
+        <div class="feedback miss" id="feedbackWrong" hidden>
+          <div class="fb-emoji">❌</div>
+          <div>
+            <p class="fb-title">Not quite — check the highlighted letters.</p>
+            <p class="fb-sub">Give it another go.</p>
+          </div>
+        </div>
+        <button class="btn good" id="nextWordBtn" style="margin-top:18px;" hidden>Next Word ▶</button>
+        <button class="btn ghost" id="tryAgainBtn" style="margin-top:18px;" hidden>🔁 Try Again</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VARIANT PICKER MODAL -->
+<div class="modal-overlay" id="variantOverlay">
+  <div class="modal">
+    <h3>Choose a look</h3>
+    <p class="modal-sub">Same app, five different styles — pick your favorite.</p>
+    <button class="variant-option" data-pick="a">
+      <span class="v-dot" style="background:#F2A62B;"></span>
+      <span><span class="v-name">A · Honeycomb</span><span class="v-desc">Warm amber, hexagon hive</span></span>
+      <span class="v-check">✓</span>
+    </button>
+    <button class="variant-option" data-pick="b">
+      <span class="v-dot" style="background:#39E6C0;"></span>
+      <span><span class="v-name">B · Arcade Mode</span><span class="v-desc">Neon console, 8-bit sounds</span></span>
+      <span class="v-check">✓</span>
+    </button>
+    <button class="variant-option" data-pick="c">
+      <span class="v-dot" style="background:#C1622D;"></span>
+      <span><span class="v-name">C · Field Journal</span><span class="v-desc">Cozy paper &amp; handwriting</span></span>
+      <span class="v-check">✓</span>
+    </button>
+    <button class="variant-option" data-pick="d">
+      <span class="v-dot" style="background:#E2231A;"></span>
+      <span><span class="v-name">D · Block World</span><span class="v-desc">Blocky voxel game UI</span></span>
+      <span class="v-check">✓</span>
+    </button>
+    <button class="variant-option" data-pick="e">
+      <span class="v-dot" style="background:#1E90FF;"></span>
+      <span><span class="v-name">E · Game World</span><span class="v-desc">HUD over a blocky sky &amp; ground</span></span>
+      <span class="v-check">✓</span>
+    </button>
+    <button class="btn ghost" id="closeVariantModal" style="margin-top:10px;">Close</button>
+  </div>
+</div>
+
+<canvas id="confettiCanvas" style="position:fixed; inset:0; z-index:200; pointer-events:none; display:none;"></canvas>
+
+<script src="app.js?v=6" defer></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
